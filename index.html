@@ -20,6 +20,68 @@ main {
 article {
     background-color: aqua;
 }
+
+/*POP-UP*/
+
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    border: 1px solid black;
+    border-radius: 10px;
+    z-index: 10;
+    background-color: white;
+    width: 500px;
+    max-width: 80%;
+}
+
+.popup.active {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.popup-header {
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid black;
+}
+
+.popup-header .name {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.popup-header .close-button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.movie {
+    padding: 10px 15px;
+}
+
+#overlay {
+    position: fixed;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .5);
+    pointer-events: none;
+}
+
+#overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
 </style>
 <body>
     <h1>Actors list</h1>
@@ -30,15 +92,15 @@ article {
             <article class="grid">
                 <h2></h2>
                 <p class="movie"></p>
-                <button>Read more</button>
+                <button data-popup-target="#popup">Read more</button>
             </article>
         </template>
     </section>
 
-    <div class="popup" id="popup">
+    <div class="popup active" id="popup">
         <div class="popup-header">
             <h2 class="name"></h2>
-            <button class="close-button">&times;</button>
+            <button data-close-button class="close-button">&times;</button>
         </div>
         <div class="movie"></div>
     </div>
