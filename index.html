@@ -7,34 +7,45 @@
     <title>Document</title>
 </head>
 <style>
-    h1 {
-        color:red;
-    }
+h1 {
+    color:rgb(0, 251, 255);
+}
 
 main {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 1.5%;
 }
+
+article {
+    background-color: aqua;
+}
 </style>
 <body>
     <h1>Actors list</h1>
-    
+
 <main></main> 
     <section>
         <template>
             <article class="grid">
-
                 <h2></h2>
                 <p class="movie"></p>
-
-
-
+                <button>Read more</button>
             </article>
         </template>
     </section>
-   
+
+    <div class="popup" id="popup">
+        <div class="popup-header">
+            <h2 class="name"></h2>
+            <button class="close-button">&times;</button>
+        </div>
+        <div class="movie"></div>
+    </div>
+    <div id="overlay"></div>
 </body>
+
+
 <script>
 fetch("./actors.json")
 .then(response => {
