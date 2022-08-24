@@ -21,13 +21,14 @@ article {
     background-color: aqua;
 }
 
-/*POP-UP*/
+                                        /*POP-UP*/
 
 .popup {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0);
+    transition: 200ms ease-in-out;
     border: 1px solid black;
     border-radius: 10px;
     z-index: 10;
@@ -69,6 +70,7 @@ article {
 #overlay {
     position: fixed;
     opacity: 0;
+    transition: 200ms ease-in-out;
     top: 0;
     left: 0;
     right: 0;
@@ -96,8 +98,7 @@ article {
             </article>
         </template>
     </section>
-
-    <div class="popup active" id="popup">
+    <div class="popup" id="popup">
         <div class="popup-header">
             <h2 class="name"></h2>
             <button data-close-button class="close-button">&times;</button>
@@ -128,11 +129,45 @@ function visJson(x) {
                     klon.querySelector("h2").textContent = actor.fullname;
                     klon.querySelector("p").textContent = actor.movie;
                     console.log(actor.fullname);
-                    klon.querySelector(".grid").addEventListener("click", () => visDetaljer(actor));
                     container.appendChild(klon);
                 }
             })
 
         }
+
+/*POPUP*/
+
+const openPopupButtons = document.querySelector('[data-popup-target]')
+const closePopupButtons = document.querySelector('[data-close-button]')
+const overlay = document.getElementById('overlay')
+
+openPopupButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const popup = document.querySelector(button.dataset.popupTarget)
+        openPopup(popup)
+        console.log("1")
+    })
+})
+
+closePopupButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const popup = button.closest('.popup')
+        closePopup(popup)
+        console.log("2")
+    })
+})
+
+function openPopup(popup) {
+    if (popup == null) return
+    popup.classList.add('active')
+    overlay.classlist.add('active')
+}
+
+function closePopup(popup) {
+    if (popup == null) return
+    popup.classList.remove('active')
+    overlay.classlist.remove('active')
+}
+
 </script>
 </html>
