@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    h1 {
+        color:red;
+    }
+
+main {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.5%;
+}
+</style>
+<body>
+    <h1>Actors list</h1>
+    
+<main></main> 
+    <section>
+        <template>
+            <article class="grid">
+
+                <h2></h2>
+                <p class="movie"></p>
+
+
+
+            </article>
+        </template>
+    </section>
+   
+</body>
+<script>
+fetch("./actors.json")
+.then(response => {
+   return response.json();
+})
+.then(actors => {console.log(actors);
+visJson(actors);
+})
+
+
+const container = document.querySelector("main");
+const template = document.querySelector("template");
+
+function visJson(x) {
+            container.textContent = "";
+            x.forEach(actor => {{
+                    const klon = template.cloneNode(true).content;
+                    klon.querySelector("h2").textContent = actor.fullname;
+                    klon.querySelector("p").textContent = actor.movie;
+                    console.log(actor.fullname);
+                    klon.querySelector(".grid").addEventListener("click", () => visDetaljer(actor));
+                    container.appendChild(klon);
+                }
+            })
+
+        }
+</script>
+</html>
