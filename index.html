@@ -23,65 +23,65 @@ article {
 
                                         /*POP-UP*/
 
-.popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    transition: 200ms ease-in-out;
-    border: 1px solid black;
-    border-radius: 10px;
-    z-index: 10;
-    background-color: white;
-    width: 500px;
-    max-width: 80%;
+                                        .modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: 200ms ease-in-out;
+  border: 1px solid black;
+  border-radius: 10px;
+  z-index: 10;
+  background-color: white;
+  width: 500px;
+  max-width: 80%;
 }
 
-.popup.active {
-    transform: translate(-50%, -50%) scale(1);
+.modal.active {
+  transform: translate(-50%, -50%) scale(1);
 }
 
-.popup-header {
-    padding: 10px 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid black;
+.modal-header {
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid black;
 }
 
-.popup-header .name {
-    font-size: 1.25rem;
-    font-weight: bold;
+.modal-header .title {
+  font-size: 1.25rem;
+  font-weight: bold;
 }
 
-.popup-header .close-button {
-    cursor: pointer;
-    border: none;
-    outline: none;
-    background: none;
-    font-size: 1.25rem;
-    font-weight: bold;
+.modal-header .close-button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 1.25rem;
+  font-weight: bold;
 }
 
-.movie {
-    padding: 10px 15px;
+.modal-body {
+  padding: 10px 15px;
 }
 
 #overlay {
-    position: fixed;
-    opacity: 0;
-    transition: 200ms ease-in-out;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, .5);
-    pointer-events: none;
+  position: fixed;
+  opacity: 0;
+  transition: 200ms ease-in-out;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, .5);
+  pointer-events: none;
 }
 
 #overlay.active {
-    opacity: 1;
-    pointer-events: all;
+  opacity: 1;
+  pointer-events: all;
 }
 
 </style>
@@ -89,21 +89,22 @@ article {
     <h1>Actors list</h1>
 
 <main></main> 
-    <section>
+
         <template>
             <article class="grid">
                 <h2></h2>
                 <p class="movie"></p>
-                <button data-popup-target="#popup">Read more</button>
             </article>
         </template>
-    </section>
-    <div class="popup" id="popup">
-        <div class="popup-header">
-            <h2 class="name"></h2>
-            <button data-close-button class="close-button">&times;</button>
-        </div>
-        <div class="movie"></div>
+
+    
+    <div class="modal" id="modal">
+      <div class="modal-header">
+        <h3 class="title"></h3>
+        <button data-close-button class="close-button">&times;</button>
+      </div>
+      <p class="modal-body">
+      </p>
     </div>
     <div id="overlay"></div>
 </body>
@@ -129,6 +130,7 @@ function visJson(x) {
                     klon.querySelector("h2").textContent = actor.fullname;
                     klon.querySelector("p").textContent = actor.movie;
                     console.log(actor.fullname);
+                    klon.querySelector(".grid").addEventListener("click", () => denNyeOpenModal(actor.fullname, actor.movie));
                     container.appendChild(klon);
                 }
             })
@@ -137,36 +139,50 @@ function visJson(x) {
 
 /*POPUP*/
 
-const openPopupButtons = document.querySelector('[data-popup-target]')
-const closePopupButtons = document.querySelector('[data-close-button]')
+const openModalButtons = document.querySelectorAll('[data-modal-target]')
+const closeModalButtons = document.querySelectorAll('[data-close-button]')
 const overlay = document.getElementById('overlay')
 
-openPopupButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        const popup = document.querySelector(button.dataset.popupTarget)
-        openPopup(popup)
-        console.log("1")
-    })
+openModalButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    const modal = document.querySelector(button.dataset.modalTarget)
+    openModal(modal)
+  })
 })
 
-closePopupButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        const popup = button.closest('.popup')
-        closePopup(popup)
-        console.log("2")
-    })
+overlay.addEventListener('click', () => {
+  const modals = document.querySelectorAll('.modal.active')
+  modals.forEach(modal => {
+    closeModal(modal)
+  })
 })
 
-function openPopup(popup) {
-    if (popup == null) return
-    popup.classList.add('active')
-    overlay.classlist.add('active')
+closeModalButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    const modal = button.closest('.modal')
+    closeModal(modal)
+  })
+})
+
+function openModal(modal) {
+  if (modal == null) return
+  modal.classList.add('active')
+  overlay.classList.add('active')
 }
 
-function closePopup(popup) {
-    if (popup == null) return
-    popup.classList.remove('active')
-    overlay.classlist.remove('active')
+function closeModal(modal) {
+  if (modal == null) return
+  modal.classList.remove('active')
+  overlay.classList.remove('active')
+}
+
+function denNyeOpenModal(pippo, paperino) {
+    const overlay = document.getElementById('overlay')
+    const modal = document.getElementById('modal')
+    modal.classList.add('active')
+    overlay.classList.add('active')
+    document.querySelector(".title").textContent = pippo;
+    document.querySelector(".modal-body").textContent = paperino;
 }
 
 </script>
